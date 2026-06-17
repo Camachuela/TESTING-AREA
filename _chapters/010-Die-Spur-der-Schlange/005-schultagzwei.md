@@ -1100,22 +1100,32 @@ _AUFSCHLÜSSELUNG_
 <!-- --- Lesezeichen & Bleistift-Fortschrittsbalken --- -->
 <style>
   /* 1. Der Fortschrittsbalken am unteren Rand */
-  .progress-container {
-    position: fixed;
-    bottom: 15px;
-    left: 5%;
-    width: 90%;
-    height: 6px;
-    z-index: 9999;
-    pointer-events: none;
-  }
+    .progress-container {
+      position: fixed;
+      bottom: 15px;
+
+      /* Left und Width werden jetzt dynamisch per JavaScript gesetzt! */
+
+      height: 12px;
+      z-index: 9999;
+      pointer-events: none;
+
+      /* Design */
+      background: rgba(128, 128, 128, 0.15);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color: currentColor;
+      border: 2px solid currentColor;
+      border-radius: 255px 25px 225px 25px/25px 225px 25px 255px;
+      box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+    }
 
   .progress-bar {
     height: 100%;
     width: 0%;
-    background-color: #4a4a4a;
-    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
-    box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    background-color: currentColor;
+    opacity: 0.85;
     transition: width 0.1s ease-out;
   }
 
@@ -1214,5 +1224,24 @@ document.addEventListener("DOMContentLoaded", function() {
     // Zeichnet den Balken
     document.getElementById("myBar").style.width = scrolled + "%";
   });
+  // --- C. Fortschrittsbalken exakt an die Textbox anpassen ---
+  // HIER BITTE DEN KLASSENNAMEN DEINER TEXTBOX EINTRAGEN (z.B. .content oder .story-container)
+  const textBox = document.querySelector('.markdown-section'); 
+  const progressContainer = document.querySelector('.progress-container');
+
+  function matchProgressToTextBox() {
+    if (textBox && progressContainer) {
+      const rect = textBox.getBoundingClientRect();
+
+      // Setzt die Position und Breite des Balkens exakt auf die Werte der Textbox
+      progressContainer.style.left = rect.left + 'px';
+      progressContainer.style.width = rect.width + 'px';
+    }
+  }
+
+  // Beim Laden, beim Scrollen und bei Größenänderung des Fensters anpassen
+  matchProgressToTextBox();
+  window.addEventListener('resize', matchProgressToTextBox);
+  window.addEventListener('scroll', matchProgressToTextBox);
 });
 </script>
