@@ -1,0 +1,107 @@
+{% assign i_chapter = site.chapters[i_chapter_idx] %}
+
+  {% if i_chapter %}
+  {% comment %}
+  #
+  # Determine if chapter is visible and/or draft and/or an index page for a schuljahr
+  #
+  {% endcomment %}
+  {% assign i_chapter_is_draft = false %}
+  {% assign i_chapter_is_visible = true %}
+  {% assign i_chapter_basename = i_chapter.path | split: "/" | last %}
+  {% assign i_chapter_sort_index = i_chapter_basename | split: "-" | first %}
+  {% assign i_chapter_sort_index_ext = nil %}
+
+  {% assign i_chapter_is_schuljahr_index = false %}
+  {% if i_chapter_basename == "000-index.md" %}
+    {% assign i_chapter_is_schuljahr_index = true %}
+  {% endif %}
+  
+  {% unless i_chapter_is_schuljahr_index %}
+    {% if i_chapter_sort_index contains "." %}
+      {% assign i_chapter_sort_index_ext = i_chapter_sort_index | split: "." | last %}
+    {% endif %}
+    {% if i_chapter_sort_index_ext == "draft" %}
+      {% assign i_chapter_is_draft = true %}
+      {% unless jekyll.environment == "development" and site.show_drafts_in_dev %}
+        {% assign i_chapter_is_visible = false %}
+      {% endunless %}
+    {% endif %}
+  {% endunless %}
+
+  {% comment %}
+  #
+  # Determine schuljahr info other than number
+  #
+  {% endcomment %}
+  {% assign i_schuljahr_folder = i_chapter.path | split: "/" | slice: -2 | first %}
+  {% if i_schuljahr_folder == "_chapters" %}
+    {% assign i_schuljahr_folder = nil %}
+    {% assign i_schuljahr_unnumbered = false %}
+    {% assign i_schuljahr_label = nil %}
+    {% assign i_schuljahr_index_chapter = nil %}
+  {% endif %}
+  {% if i_schuljahr_folder %}
+    {% assign i_schuljahr_sort_index = i_schuljahr_folder | split: "-" | first %}
+    {% if i_schuljahr_sort_index contains "." %}
+      {% assign i_schuljahr_sort_index_ext = i_schuljahr_sort_index | split: "." | last %}
+    {% else %}
+      {% assign i_schuljahr_sort_index_ext = nil %}
+    {% endif %}
+
+    {% if i_schuljahr_sort_index_ext == "draft" %}
+      {% assign i_schuljahr_is_draft = true %}
+    {% else %}
+      {% assign i_schuljahr_is_draft = false %}
+    {% endif %}
+
+    {% capture _schuljahr_index_path %}_chapters/{{ i_schuljahr_folder}}/000-index.md{% endcapture %}
+    {% assign i_schuljahr_index_chapter = site.chapters | where: "path", _schuljahr_index_path | first  %}  
+
+    {% if i_schuljahr_sort_index == "000" or i_schuljahr_sort_index == "999" %}
+      {% assign i_schuljahr_unnumbered = true %}
+      {% assign i_schuljahr_label = nil %}
+    {% elsif i_schuljahr_sort_index == "990" %}
+      {% assign i_schuljahr_unnumbered = true %}
+      {% assign i_schuljahr_label = i_schuljahr_folder | split: "-" | shift | join: " " | capitalize %}
+    {% else %}
+      {% assign i_schuljahr_unnumbered = false %}
+      {% assign i_schuljahr_label = i_schuljahr_folder | split: "-" | shift | join: " " | capitalize %}
+    {% endif %}
+
+  {% endif %}
+
+  {% comment %}
+  #
+  # Determine schuljahr and chapter numbers
+  #
+  {% endcomment %}
+
+  {% if i_schuljahr_unnumbered %}
+    {% assign i_chapter_num = nil %}
+    {% assign i_schuljahr_num = nil %}
+  {% else %}
+    {% if i_chapter_is_draft %}
+      {% assign i_chapter_num = "X" %}
+    {% elsif i_chapter_is_schuljahr_index %}
+      {% assign i_chapter_num = "" %}
+    {% elsif i_chapter_is_visible %}
+      {% assign i_chapter_num = i_last_numeric_chapter_num | plus: 1 %}
+      {% assign i_last_numeric_chapter_num = i_chapter_num %}
+    {% else %}
+      {% assign i_chapter_num = "" %}
+    {% endif %}
+
+    {% if i_schuljahr_folder and i_schuljahr_folder != i_prev_schuljahr_folder %}
+      {% if i_schuljahr_is_draft %}
+        {% assign i_schuljahr_num = "X" %}
+      {% else %}
+        {% assign i_schuljahr_num = i_last_numeric_schuljahr_num | plus: 1 %}
+        {% assign i_last_numeric_schuljahr_num = i_schuljahr_num %}
+      {% endif %}
+    {% endif %}
+  {% endif %}
+
+{% else %}
+  {% include chapter-iterate-vars.html unset = "current" %}
+{% endif %}

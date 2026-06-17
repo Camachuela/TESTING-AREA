@@ -1,0 +1,276 @@
+---
+layout: chapter
+---
+
+<style>
+.friend-profile-card {
+    border: 1px solid currentColor;
+    margin: 40px 0;
+    position: relative;
+    padding-top: 85px;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+}
+
+.house-bar {
+    height: 80px; width: 100%; position: absolute; top: 0; left: 0; opacity: 0.9;
+    background-position: center; background-size: cover; background-repeat: no-repeat;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Banner-Logik via Klasse */
+.house-slytherin { background-image: url('assets/images/cvs/cv_banner-slytherin.webp'); }
+.house-gryffindor { background-image: url('assets/images/cvs/cv_banner-gryffindor.webp'); }
+.house-ravenclaw { background-image: url('assets/images/cvs/cv_banner-ravenclaw.webp'); }
+.house-hufflepuff { background-image: url('assets/images/cvs/cv_banner-hufflepuff.webp'); }
+.house-hogsmeade { background-image: url('assets/images/cvs/cv_banner-hogsmeade.webp'); }
+.house-beasts { background-image: url('assets/images/cvs/cv_banner-beasts.webp'); }
+.house-hogwarts { background-image: url('assets/images/cvs/cv_banner-hogwarts.webp'); }
+.house-others { background-image: url('assets/images/cvs/cv_banner-others.webp'); }
+
+/* NEU: Flexbox aus, Float-Layout an */
+.profile-main-content {
+    display: block;
+    padding: 20px;
+}
+/* Verhindert, dass das schwebende Bild unten aus der Box rutscht */
+.profile-main-content::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.section-subtitle { display: block; font-weight: bold; text-transform: uppercase; margin: 15px 0 5px 0; font-size: 0.9em; border-bottom: 1px solid currentColor; letter-spacing: 1px; }
+
+/* Gilt NUR für die Fakten-Listen oben (Allgemeine Angaben, etc.) */
+.details-section .info-list li {
+    margin-bottom: 0.8em;
+    line-height: 1.5;
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 10px;
+    align-items: baseline;
+}
+
+.info-label {
+    font-weight: bold;
+    opacity: 0.55;
+}
+
+/* NEU: Das Bild schwebt rechts, Text fließt links und unten vorbei */
+.image-container {
+    float: right;
+    width: 190px;
+    margin-top: 35px;
+    margin-right: 40px;
+    margin-left: 30px;   /* Puffer zum Text links */
+    margin-bottom: 20px; /* Puffer zum Text unten */
+    position: relative;
+}
+
+.profile-pic {
+  width: 100%;
+  border: 1px solid currentColor;
+  cursor: zoom-in;
+}
+
+.house-seal {
+    display: block; width: 80px; height: auto;
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+    transform: rotate(-8deg); transition: transform 0.3s ease;
+    cursor: zoom-in;
+}
+
+/* --- KLAPP-CHRONIK BASIS-STEUERUNG --- */
+.chronicle-toggle {
+    display: none;
+}
+
+.chronicle-label {
+    display: block;
+    padding: 15px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    border-top: 1px solid currentColor;
+    background: rgba(128, 128, 128, 0.05);
+}
+
+.chronicle-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+}
+
+.chronicle-toggle:checked ~ .chronicle-content {
+    max-height: 5000px;
+    padding: 20px 20px 40px 20px;
+    border-top: 1px dashed currentColor;
+}
+
+/* Styling für das Gefahrenpotential-Tag */
+.danger-tag {
+    display: inline-block;
+    width: fit-content;
+    padding: 2px 12px;
+    border-radius: 2px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    letter-spacing: 0.5px;
+    transform: rotate(-1.5deg);
+    box-shadow: 1px 2px 4px rgba(0,0,0,0.15);
+}
+
+/* Farben (etwas "staubiger" für den 50er Jahre Look) */
+.tag-grün { background-color: #3e5e3e; color: #fff; }
+.tag-weiß { background-color: #dcdcdc; color: #333; border: 1px solid #bbb; }
+.tag-gelb { background-color: #d4af37; color: #fff; }
+.tag-orange { background-color: #a6612c; color: #fff; }
+.tag-rot { background-color: #8b0000; color: #fff; }
+
+/* --- FORMATIERUNG DER LISTEN IN DER CHRONIK --- */
+.chronicle-content ul {
+    list-style: none !important;
+    padding-left: 0;
+    margin-top: 15px;
+}
+
+.chronicle-content li {
+    position: relative;
+    display: block;
+    padding-left: 25px;
+    margin-bottom: 12px;
+    line-height: 1.5;
+    list-style: none !important;
+}
+
+.chronicle-content li::before {
+    content: "»";
+    position: absolute;
+    left: 0;
+    color: currentColor;
+    font-weight: bold;
+    opacity: 0.7;
+}
+
+/* ======================================================= */
+/* MOBILE ANPASSUNGEN (Bild schwebt rechts, Text füllt auf) */
+/* ======================================================= */
+@media (max-width: 768px) {
+    .profile-main-content {
+        padding: 10px;
+    }
+
+    .image-container {
+        width: 110px;
+        margin-top: 35px;
+        margin-right: 15px;
+        margin-left: 15px;
+        margin-bottom: 10px;
+    }
+
+    .details-section {
+        font-size: 0.85em;
+    }
+
+    .details-section .info-list li {
+        grid-template-columns: 115px 1fr;
+        gap: 5px;
+    }
+}
+</style>
+
+<div class="friend-profile-card">
+  <div class="house-bar house-{{ page.house_slug }}"></div>
+
+  <div class="profile-main-content">
+
+    <div class="image-container">
+      <img src="{{ site.baseurl }}/assets/images/cvs/{{ page.token_img }}" class="profile-pic" onclick="document.getElementById('modal-pic-{{ page.slug }}').style.display='block'">
+
+      <div id="modal-pic-{{ page.slug }}" class="modal" onclick="this.style.display='none'">
+        <span class="close-btn">&times;</span>
+        <img class="modal-content" src="{{ site.baseurl }}/assets/images/cvs/{{ page.token_img }}">
+      </div>
+    </div>
+
+    <div class="details-section">
+      <span class="section-subtitle">Allgemeine Angaben</span>
+      <ul class="info-list">
+        <li><span class="info-label">Name:</span> {{ page.full_name }}</li>
+        <li><span class="info-label">Geburtsdatum:</span> {{ page.birth_year }}</li>
+        <li><span class="info-label">Sterbedatum:</span> {{ page.death_year }}</li>
+        <li><span class="info-label">Jahrgangsstufe:</span> {{ page.school_year }}</li>
+        <li><span class="info-label">Haus:</span> {{ page.house_name }}</li>
+        <li><span class="info-label">Zauberstab:</span> {{ page.wand }}</li>
+        <li><span class="info-label">Aufenthaltsort:</span> {{ page.location }}</li>
+        <li>
+            <span class="info-label">Gefahrenpotential:</span>
+            <span class="danger-tag tag-{{ page.estimate_danger | lowercase }}">
+              {% assign gefahr = page.estimate_danger | lowercase %}
+              {% if gefahr == 'grün' %}sicher
+              {% elsif gefahr == 'weiß' %}neutral
+              {% elsif gefahr == 'gelb' %}Warnung
+              {% elsif gefahr == 'orange' %}gefährlich
+              {% elsif gefahr == 'rot' %}Bedrohung
+              {% else %}{{ page.estimate_danger }}{% endif %}</span></li>
+      </ul>
+
+      <span class="section-subtitle">Äußere Erscheinung</span>
+      <ul class="info-list">
+        <li><span class="info-label">Merkmale:</span> {{ page.appearance_features }}</li>
+        <li><span class="info-label">Auftreten & Gebaren:</span> {{ page.appearance_behavior }}</li>
+        <li><span class="info-label">Details:</span> {{ page.appearance_details }}</li>
+      </ul>
+
+      <span class="section-subtitle">Charakterbild</span>
+      <ul class="info-list">
+        <li><span class="info-label">Die Fassade:</span> {{ page.char_facade }}</li>
+        <li><span class="info-label">Beweggründe:</span> {{ page.char_motives }}</li>
+        <li><span class="info-label">Stärken:</span> {{ page.char_strength }}</li>
+        <li><span class="info-label">Schwächen:</span> {{ page.char_weakness }}</li>
+        <li><span class="info-label">Empfindlichkeiten:</span> {{ page.char_sensitivity }}</li>
+        <li><span class="info-label">Stellung:</span> {{ page.char_status }}</li>
+      </ul>
+
+      <span class="section-subtitle">Einschätzung</span>
+      <ul class="info-list">
+        <li><span class="info-label">Instinkt:</span> {{ page.estimate_instinct }}</li>
+        <li><span class="info-label">Gerede:</span> {{ page.estimate_rumors }}</li>
+        <li><span class="info-label">Wortlaut:</span> {{ page.estimate_quote }}</li>
+      </ul>
+
+      <span class="section-subtitle">Aufzeichnungen</span>
+      <ul class="info-list">
+        <li><span class="info-label">aktuelles Verhältnis:</span> {{ page.relation_status }}</li>
+        <li><span class="info-label">Beobachtungen:</span> {{ page.observations }}</li>
+      </ul>
+    </div>
+  </div>
+
+  <input type="checkbox" id="chronik-{{ page.slug }}" class="chronicle-toggle">
+  <label for="chronik-{{ page.slug }}" class="chronicle-label">
+    Chronik der Begegnungen <br> [ ZUM AUSKLAPPEN ]
+  </label>
+
+  <div class="chronicle-content">
+      <p><strong>Bisherige Ereignisse</strong></p>
+      <ul class="info-list" style="margin-top: 10px; border: none;">
+          {{ content }}
+      </ul>
+
+      <div style="display: flex; align-items: center; margin-top: 30px; padding-right: 15px; width: 100%;">
+          <p style="margin: 0; font-size: 0.9em; opacity: 0.9;">Stand: {{ page.last_update }}</p>
+          <div style="flex-grow: 1;"></div>
+
+          <img src="{{ site.baseurl }}/assets/images/cvs/{{ page.house_slug }}_sigil.webp" class="house-seal" alt="Haus-Siegel" onclick="document.getElementById('modal-seal-{{ page.slug }}').style.display='block'">
+
+          <div id="modal-seal-{{ page.slug }}" class="modal" onclick="this.style.display='none'">
+            <span class="close-btn">&times;</span>
+            <img class="modal-content" src="{{ site.baseurl }}/assets/images/cvs/{{ page.house_slug }}_sigil.webp">
+          </div>
+      </div>
+  </div>
+</div>

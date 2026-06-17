@@ -1,0 +1,58 @@
+---
+layout: home
+---
+
+<style type="text/css" media="screen">
+  .error-container {
+    margin: 10px auto;
+    max-width: 600px;
+    text-align: center;
+    /* Zentriert auch das Bild sicher in der Mitte */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .error-container h1 {
+    margin: 30px 0 20px 0;
+    font-size: 4em;
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+
+  /* Zwingt das Theme, alle Texte in diesem Container zu zentrieren */
+  .error-container p {
+    text-align: center !important;
+    margin-bottom: 15px;
+  }
+</style>
+
+<div class="error-container">
+
+  <h1>Evanesco!</h1>
+
+  <img src="{{ 'assets/images/general/404.webp' | relative_url }}"
+       alt="404"
+       width="400"
+       style="margin-bottom: 30px; cursor: zoom-in;"
+       onclick="document.getElementById('modal-404').style.display='block'">
+
+  <p><strong>Glückwunsch!</strong></p>
+
+  <p>Du hast, genau wie Ella, einen verborgenen Durchgang gefunden.
+     Die schlechte Nachricht: Dies ist kein versteckter Bahnsteig 9¾ sondern
+     nur eine verloren gegangene Seite, die selbst Revelio hier nicht mehr sichtbar macht.
+  </p>
+
+  <p>
+    <a href="{{ 'index.html' | relative_url }}" style="text-decoration: none; font-weight: bold;">
+      « Nimm diesen Portschlüssel nach Hause.
+    </a>
+  </p>
+
+  <div id="modal-404" class="modal" onclick="this.style.display='none'">
+    <span class="close-btn">&times;</span>
+    <img class="modal-content" src="{{ 'assets/images/general/404.webp' | relative_url }}">
+  </div>
+
+</div>
