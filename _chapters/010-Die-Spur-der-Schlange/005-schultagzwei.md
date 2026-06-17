@@ -1102,61 +1102,63 @@ _AUFSCHLÜSSELUNG_
   /* 1. Der Fortschrittsbalken am unteren Rand */
   .progress-container {
     position: fixed;
-    bottom: 20px; /* Lässt den Balken etwas über dem Text schweben */
+    bottom: 15px;
     left: 5%;
     width: 90%;
-    height: 6px; /* Dicke des Bleistiftstrichs */
+    height: 6px;
     z-index: 9999;
-    pointer-events: none; /* Verhindert, dass der Balken Klicks blockiert */
+    pointer-events: none;
   }
 
   .progress-bar {
     height: 100%;
     width: 0%;
-    background-color: #4a4a4a; /* Graphit-Grau */
-    /* Erzeugt die leicht unregelmäßige, handgezeichnete Bleistiftoptik */
+    background-color: #4a4a4a;
     border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
-    box-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Leichter Schatten auf dem Papier */
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
     transition: width 0.1s ease-out;
   }
 
-  /* 2. Die Lesezeichen-Buttons rechts unten */
+  /* 2. Die runden Lesezeichen-Buttons rechts am Rand */
   .bookmark-widget {
     position: fixed;
-    bottom: 45px; /* Sitzt leicht über dem Fortschrittsbalken */
-    right: 5%;
+    bottom: 30px; /* Sitzt dezent über dem Balken */
+    right: 10px; /* Ganz nah an den rechten Bildschirmrand geschoben */
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px; /* Abstand zwischen den beiden runden Buttons */
   }
 
   .bookmark-widget .btn {
-    padding: 10px 15px;
-    background-color: #f9f9f9; /* Helle Papierfarbe für den Button */
-    color: #333;
-    /* Handgezeichneter Rahmen für den Button */
+    width: 45px; /* Perfekte Größe für einen Fingerabdruck */
+    height: 45px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
     border: 2px solid #4a4a4a;
-    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    border-radius: 50%; /* Macht den Button kreisrund */
     cursor: pointer;
-    font-family: inherit;
-    font-weight: bold;
-    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    font-size: 20px; /* Macht das Emoji schön groß */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    /* Optional: Ein minimal unrunder Rahmen für den Skizzen-Look */
+    /* border-radius: 50% 45% 55% 40% / 45% 55% 45% 55%; */
   }
 
   .bookmark-widget .btn:hover {
-    background-color: #e0e0e0; /* Wird beim Drüberfahren etwas dunkler */
+    background-color: #e0e0e0;
   }
 </style>
 
-<!-- Die HTML-Elemente, die auf der Seite angezeigt werden -->
 <div class="progress-container">
   <div class="progress-bar" id="myBar"></div>
 </div>
 
 <div id="bookmark-container" class="bookmark-widget">
-  <button id="save-bookmark" class="btn">🔖 Lesezeichen setzen</button>
-  <button id="load-bookmark" class="btn" style="display: none;">📖 Zum Lesezeichen springen</button>
+  <button id="save-bookmark" class="btn" title="Lesezeichen setzen">🔖</button>
+  <button id="load-bookmark" class="btn" style="display: none;" title="Zum Lesezeichen springen">📖</button>
 </div>
 
 <!-- Die Logik für Balken und Speichern -->
