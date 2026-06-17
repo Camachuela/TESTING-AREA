@@ -159,6 +159,7 @@ _AUFSCHLÜSSELUNG_
 <div id="bookmark-container" class="bookmark-widget">
   <button id="save-bookmark" class="btn" title="Lesezeichen setzen">🔖</button>
   <button id="load-bookmark" class="btn" style="display: none;" title="Zum Lesezeichen springen">📖</button>
+  <button id="delete-bookmark" class="btn" style="display: none;" title="Lesezeichen löschen">🗑️</button>
 </div>
 
 <!-- Die Logik für Balken und Speichern -->
@@ -166,32 +167,43 @@ _AUFSCHLÜSSELUNG_
 document.addEventListener("DOMContentLoaded", function() {
 
   // --- A. Lesezeichen-Logik ---
-  const saveBtn = document.getElementById("save-bookmark");
-  const loadBtn = document.getElementById("load-bookmark");
+    const saveBtn = document.getElementById("save-bookmark");
+    const loadBtn = document.getElementById("load-bookmark");
+    const deleteBtn = document.getElementById("delete-bookmark");
 
-  // Generiert für jedes Kapitel einen eigenen Schlüssel
-  const pageKey = "bookmark-" + window.location.pathname;
+    // Generiert für jedes Kapitel einen eigenen Schlüssel
+    const pageKey = "bookmark-" + window.location.pathname;
 
-  // Prüft, ob es für dieses Kapitel schon ein Lesezeichen gibt
-  const savedPosition = localStorage.getItem(pageKey);
-  if (savedPosition) {
-    loadBtn.style.display = "inline-block";
-  }
+    // Prüft, ob es für dieses Kapitel schon ein Lesezeichen gibt
+    const savedPosition = localStorage.getItem(pageKey);
+    if (savedPosition) {
+      loadBtn.style.display = "inline-block";
+      deleteBtn.style.display = "inline-block";
+    }
 
-  // Was passiert beim Speichern
-  saveBtn.addEventListener("click", function() {
-    localStorage.setItem(pageKey, window.scrollY);
-    alert('„Dein Lesezeichen wurde erfolgreich gespeichert!“');
-    loadBtn.style.display = "inline-block";
-  });
-
-  // Was passiert beim Laden
-  loadBtn.addEventListener("click", function() {
-    window.scrollTo({
-      top: parseInt(localStorage.getItem(pageKey), 10),
-      behavior: "smooth"
+    // Was passiert beim Speichern
+    saveBtn.addEventListener("click", function() {
+      localStorage.setItem(pageKey, window.scrollY);
+      alert('„Dein Lesezeichen wurde erfolgreich gespeichert!“');
+      loadBtn.style.display = "inline-block";
+      deleteBtn.style.display = "inline-block";
     });
-  });
+
+    // Was passiert beim Laden
+    loadBtn.addEventListener("click", function() {
+      window.scrollTo({
+        top: parseInt(localStorage.getItem(pageKey), 10),
+        behavior: "smooth"
+      });
+    });
+
+    // Was passiert beim Löschen
+    deleteBtn.addEventListener("click", function() {
+      localStorage.removeItem(pageKey);
+      alert('„Das Lesezeichen wurde entfernt.“');
+      loadBtn.style.display = "none";
+      deleteBtn.style.display = "none";
+    });
 
   // --- B. Fortschrittsbalken-Logik ---
   window.addEventListener('scroll', function() {
