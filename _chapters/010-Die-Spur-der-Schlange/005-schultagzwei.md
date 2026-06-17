@@ -1102,7 +1102,7 @@ _AUFSCHLÜSSELUNG_
   /* 1. Der Fortschrittsbalken am unteren Rand */
     .progress-container {
       position: fixed;
-      bottom: 15px;
+      bottom: 5px;
 
       /* Left und Width werden jetzt dynamisch per JavaScript gesetzt! */
 
@@ -1132,7 +1132,7 @@ _AUFSCHLÜSSELUNG_
   /* 2. Die runden Lesezeichen-Buttons rechts am Rand */
   .bookmark-widget {
     position: fixed;
-    bottom: 30px;
+    bottom: 20px;
     right: 10px;
     z-index: 1000;
     display: flex;
@@ -1226,7 +1226,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
   // --- C. Fortschrittsbalken exakt an die Textbox anpassen ---
   // HIER BITTE DEN KLASSENNAMEN DEINER TEXTBOX EINTRAGEN (z.B. .content oder .story-container)
-  const textBox = document.querySelector('.markdown-section'); 
+  const textBox = document.querySelector('.markdown-section');
   const progressContainer = document.querySelector('.progress-container');
 
   function matchProgressToTextBox() {
