@@ -1122,33 +1122,37 @@ _AUFSCHLÜSSELUNG_
   /* 2. Die runden Lesezeichen-Buttons rechts am Rand */
   .bookmark-widget {
     position: fixed;
-    bottom: 30px; /* Sitzt dezent über dem Balken */
-    right: 10px; /* Ganz nah an den rechten Bildschirmrand geschoben */
+    bottom: 30px;
+    right: 10px;
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    gap: 12px; /* Abstand zwischen den beiden runden Buttons */
+    gap: 12px;
   }
 
   .bookmark-widget .btn {
-    width: 45px; /* Perfekte Größe für einen Fingerabdruck */
+    width: 45px;
     height: 45px;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f9f9f9;
-    border: 2px solid #4a4a4a;
-    border-radius: 50%; /* Macht den Button kreisrund */
+
+    /* Der Milchglas-Effekt (Frosted Glass) */
+    background-color: rgba(128, 128, 128, 0.15); /* Sehr transparentes, neutrales Grau */
+    backdrop-filter: blur(6px); /* Verwischt den Text dahinter */
+    -webkit-backdrop-filter: blur(6px); /* Wichtig für iPhones und Safari */
+
+    /* Ein leicht transparenter Graphit-Rand für den Bleistift-Look */
+    border: 2px solid rgba(74, 74, 74, 0.6);
+    border-radius: 50%;
     cursor: pointer;
-    font-size: 20px; /* Macht das Emoji schön groß */
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-    /* Optional: Ein minimal unrunder Rahmen für den Skizzen-Look */
-    /* border-radius: 50% 45% 55% 40% / 45% 55% 45% 55%; */
+    font-size: 20px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
   }
 
   .bookmark-widget .btn:hover {
-    background-color: #e0e0e0;
+    background-color: rgba(128, 128, 128, 0.3); /* Wird beim Antippen minimal sichtbarer */
   }
 </style>
 
