@@ -1139,12 +1139,14 @@ _AUFSCHLÜSSELUNG_
     align-items: center;
 
     /* Der Milchglas-Effekt (Frosted Glass) */
-    background-color: rgba(128, 128, 128, 0.15); /* Sehr transparentes, neutrales Grau */
-    backdrop-filter: blur(6px); /* Verwischt den Text dahinter */
-    -webkit-backdrop-filter: blur(6px); /* Wichtig für iPhones und Safari */
+    background-color: rgba(128, 128, 128, 0.15);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 
-    /* Ein leicht transparenter Graphit-Rand für den Bleistift-Look */
-    border: 2px solid rgba(74, 74, 74, 0.6);
+    /* Passt sich vollautomatisch der Schriftfarbe des aktuellen Themes an */
+    color: currentColor;
+    border: 2px solid currentColor;
+
     border-radius: 50%;
     cursor: pointer;
     font-size: 20px;
